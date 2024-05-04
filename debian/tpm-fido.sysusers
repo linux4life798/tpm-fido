@@ -1,0 +1,11 @@
+# Add the system group "uhid" to allow tpm-fido, running as our limited user,
+# access to /dev/uhid.
+# Note that this group will remain on the installed machine after the
+# controlling package is purged.
+#
+# References:
+# - https://manpages.debian.org/testing/debhelper/dh_installsysusers.1.en.html
+# - https://manpages.debian.org/testing/systemd/sysusers.d.5.en.html
+#
+#Type Name     ID             GECOS                 Home directory Shell
+g     uhid    -              -

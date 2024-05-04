@@ -1,0 +1,11 @@
+[Unit]
+Description=Allow system group uhid access to /dev/uhid for the tpm-fido service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/chmod u=rw,g=rw,o= /dev/uhid
+ExecStart=/usr/bin/chown root:uhid /dev/uhid
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

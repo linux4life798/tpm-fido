@@ -1,0 +1,16 @@
+# You can add this udev rule to the package by removing the ".disabled" from
+# the file name.
+#
+# This is a bit of a catch 22, since this udev rule won't trigger until
+# a service that has permission to access /dev/uhid interacts with it, but
+# our tpm-fido service doesn't have access to /dev/uhid until this udev rule
+# is triggered.
+#
+# You can see this by running "udevadm info -q path -n /dev/uhid" before
+# any service/program has accessed /dev/uhid. Udevadm will not have any
+# understanding of this path.
+# After you start a service that accesses /dev/uhid, run the following:
+# sudo udevadm test $(udevadm info -q path -n /dev/uhid)
+#
+# The tpm-fido package created the uhid system group.
+KERNEL=="uhid", SUBSYSTEM=="misc", GROUP="uhid", MODE="0660"

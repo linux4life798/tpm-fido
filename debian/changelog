@@ -1,0 +1,5 @@
+tpm-fido (0.0~git20230621.5f8828b-1) unstable; urgency=medium
+
+  * Initial release.
+
+ -- Craig Hesling <craig@hesling.com>  Sun, 05 May 2024 20:23:37 -0700

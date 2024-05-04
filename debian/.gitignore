@@ -1,0 +1,9 @@
+*.debhelper
+*.log
+*.substvars
+/.debhelper/
+/debhelper-build-stamp
+/files
+# Debian temporary Go build dir.
+/_build
+/tpm-fido/

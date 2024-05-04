@@ -1,0 +1,36 @@
+Source: tpm-fido
+Section: golang
+Priority: optional
+Maintainer: Debian Go Packaging Team <team+pkg-go@tracker.debian.org>
+Uploaders: Craig Hesling <craig@hesling.com>
+Rules-Requires-Root: no
+# Pkg ca-certificates is required to be able to download (and verify) packages
+# with "go get". We need this because we are explicitly downloading dependencies
+# during the build phase. See the rules file for further explanation.
+# The ca-certificates pkg is usually installed as a recommendation/suggestion,
+# but may be omitted based on apt settings.
+Build-Depends: debhelper-compat (= 13),
+               dh-sequence-golang,
+               golang-any,
+               ca-certificates
+Testsuite: autopkgtest-pkg-go
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/go-team/packages/tpm-fido
+Vcs-Git: https://salsa.debian.org/go-team/packages/tpm-fido.git
+Homepage: https://github.com/psanford/tpm-fido
+XS-Go-Import-Path: github.com/psanford/tpm-fido
+
+Package: tpm-fido
+Section: utils
+Architecture: any
+Depends: pinentry-gnome3 | pinentry-gtk2 | pinentry-qt | pinentry-curses | pinentry-fltk | pinentry-tty,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Built-Using: ${misc:Built-Using}
+Description: A WebAuthn/U2F token protected by a TPM
+ tpm-fido is FIDO token implementation for Linux that protects the token
+ keys by using your system's TPM. tpm-fido uses Linux's uhid
+ (https://github.com/psanford/uhid) facility to emulate a USB HID device
+ so that it is properly detected by browsers.
+ .
+ See https://github.com/psanford/tpm-fido for more info.

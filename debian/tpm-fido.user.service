@@ -1,0 +1,11 @@
+[Unit]
+Description=A WebAuthn/U2F token protected by a TPM
+After=uhid-permission.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+ExecStart=/usr/bin/tpm-fido
+
+[Install]
+WantedBy=default.target

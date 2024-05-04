@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+# Enabling DH_VERBOSE forces the logging of all build steps and commands.
+# See debhelper(7) for more info.
+export DH_VERBOSE = 1
+
+# Setting these environment variables re-enable the ability for Go to download
+# missing dependencies and honor modules. These are intentionally overridden
+# by the Debian golang build script to force the use of local libraries provided
+# by other Debian Go source packages. See the source that overrides these
+# for more info:
+# - https://salsa.debian.org/go-team/packages/dh-golang/-/blob/81892fe8d3a51a22c910a649052669dd9f18837e/lib/Debian/Debhelper/Buildsystem/golang.pm#L355-369
+# - /usr/share/perl5/Debian/Debhelper/Buildsystem/golang.pm
+# Also, checkout:
+# - https://go.dev/blog/go116-module-changes
+# - https://manpages.debian.org/testing/dh-golang/Debian::Debhelper::Buildsystem::golang.3pm.en.html
+# - https://manpages.debian.org/testing/dh-golang/dh_golang.1p.en.html
+# - https://people.debian.org/~stapelberg/2015/07/27/dh-make-golang.html
+# - https://go-team.pages.debian.net/packaging.html
+# - https://github.com/Debian/dh-make-golang/tree/master
+# - https://github.com/Debian/debhelper/tree/main
+export GO111MODULE = on
+export GOPROXY =
+
+%:
+	dh $@ --builddirectory=debian/_build --buildsystem=golang
+
+# It seems like the trend is to put user daemon binaries in /usr/bin (instead
+# of sbin) which is the default location for golang.pm's install script.
+# We are not installing source, since this is a binary executable pkg.
+override_dh_auto_install:
+	dh_auto_install -- --no-source
+
+execute_after_dh_install:
+	dh_installsysusers
+
+# We use dh_installsystemd and dh_installsystemduser for installing systemd
+# services. Checkout the following resources for more info:
+# - https://manpages.debian.org/testing/debhelper/dh_installsystemd.1.en.html
+# - https://manpages.debian.org/testing/debhelper/dh_installsystemduser.1.en.html
+
+override_dh_installsystemd:
+	dh_installsystemd --name=uhid-permission
+
+# Uncomment the following to not automatically unable the tpm-fido user service
+# after install. It also allows for the user to enable/disable the service.
+#override_dh_installsystemduser:
+#	dh_installsystemduser --no-enable
