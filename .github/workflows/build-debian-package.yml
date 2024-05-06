@@ -1,0 +1,27 @@
+name: Debian Package Builder
+on: [push, pull_request]
+
+# We use https://github.com/marketplace/actions/build-debian-packages to run
+# the debian package builder in a Debian docker container.
+
+jobs:
+  build-debs:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Build Debian package for amd64
+        uses: jtdor/build-deb-action@v1
+        # Output artifacts are copied to debian/artifacts, by default.
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          docker-image: debian:testing
+          host-arch: amd64
+          buildpackage-opts: --build=binary --no-sign
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tpm-fido-debian-package-${{ github.sha }}
+          path: debian/artifacts/*
