@@ -39,8 +39,8 @@ execute_after_dh_install:
 # - https://manpages.debian.org/testing/debhelper/dh_installsystemd.1.en.html
 # - https://manpages.debian.org/testing/debhelper/dh_installsystemduser.1.en.html
 
-override_dh_installsystemd:
-	dh_installsystemd --name=uhid-permission
+# override_dh_installsystemd:
+# 	dh_installsystemd --name=uhid-permission
 
 # Uncomment the following to not automatically unable the tpm-fido user service
 # after install. It also allows for the user to enable/disable the service.

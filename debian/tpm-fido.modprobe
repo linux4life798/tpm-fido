@@ -1,0 +1,2 @@
+# Forcing this module to probe will trigger the udev rule to set permissions.
+uhid
